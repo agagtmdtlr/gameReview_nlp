@@ -1,0 +1,21 @@
+모든 작업은 uclid_matrix_keyword.py 에서 진행한다.
+리뷰 토큰화-> word embedding -> uclid-distance -> weight-matrix
+-> score-matrix -> document-integer-encoding -> keyword-subset
+-> cluster-keyword-with update category
+
+
+update_word_remake.csv 파일을 통해서
+모든 업데이트별 리뷰의 카테고리 분류 작업을 진행한다.
+업데이트 날짜, 리뷰 분류에 사용할 키워드를 담고 있다.
+
+불러온 리뷰 데이터를 LABEL 속성으로 분류하여 각각 작업한다.
+
+분류 리뷰를 토큰화하여 noun_stopword.txt를 사용하여 불용어 처리한다.
+
+word2vec 학습 후 tsne lib 를 사용하여 차원축소 한다.
+
+distanse(단어-단어), 가중치를 계산한다.
+
+YYYY년MM월DD일_category.txt를 참고하여 키워드를
+카테고리별로 분류한다.
+
