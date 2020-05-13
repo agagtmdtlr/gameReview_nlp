@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
+
 ### 경로 ###
 url = 'https://play.google.com/store/apps/details?id=com.supercell.brawlstars&hl=ko&showAllReviews=true'
 filepath = 'd:/chromedriver.exe'
@@ -66,6 +67,11 @@ check = 203
 cnt = 0
 end = False
 #####################  method defined ########################################
+
+time.sleep(40)
+driver.quit()
+
+# 스크롤 작업 메소드 : return boolean
 def cycleScroll(times):
     scroll_wait = times
     global check
@@ -97,6 +103,7 @@ def cycleScroll(times):
         print(err)
         return True
 
+# 추가 작업 진행 여부 판단 함수 : return boolean
 def checkHeight(point = 0):
     global end
     global last_height
