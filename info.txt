@@ -1,0 +1,12 @@
+
+step 1.
+    directory : 크롤링
+        crawling_version_2.00.py
+            크롤링 작업 완료후 추출한 데이터를 directory concat_data에
+            저장한다.
+            file : brawlstarz_review_google.csv
+step 2.
+    directory : concat_data
+        concat_data.py
+            apple/google review 를 필요할 경우 합친다.
+            
