@@ -79,7 +79,7 @@ def analyData(forFrame):
             all_sentense_list = []
 
             # 리뷰 개수 설정하기
-            item_cnt = 100
+            item_cnt = 30000
             text_id_list = list(f['ID'][:item_cnt])
             print(text_id_list)
             # 각 감정 프레임에서 리뷰 100개만 형태소 분석기 돌리기
@@ -91,6 +91,7 @@ def analyData(forFrame):
 
                 # 리뷰 문자 토큰화
                 sent_tokens = sent_tokenize(text)
+                # print(sent_tokens)
                 # print('sent_l',len(sent_l))
 
 
@@ -108,7 +109,7 @@ def analyData(forFrame):
                            if x[0] not in('롤러','지금','다른') and
                            x[1] in ['Noun','Verb','Adjective','Unknown'] and
                            len(x[0])>1]
-
+                    print(pos)
                     # word2vec에 학습시킬 데이터 (명사,형용사,동사)
                     word_tokens.extend([ x[0] for x in pos ])
 
@@ -132,11 +133,12 @@ def analyData(forFrame):
             # 분류한 토큰으로 word2vec 학습 시키기
             model = word2vec.Word2Vec(all_sentense_list,
                                       size=100,
-                                      window=5,
-                                      iter=30,
-                                      min_count=2,
+                                      window=3,
+                                      iter=5,
+                                      min_count=1,
                                       hs=1,
-                                      sg=1)
+                                      sg=1,
+                                      workers=6)
 
             # size 100 concat_data dimesion 2로 줄이기
             tsne = TSNE(n_components=2) # 2차원 설정
@@ -169,8 +171,11 @@ def analyData(forFrame):
 
             # 거리 행렬 구하기 : noun_vocab * noun_vocab
             # 거리 행렬 프레임 데이터
-            data_n = len(noun_vocab)
+            data_n = len(noun_vocab)**2
+            print('data_n','\n',data_n)
             uclid_data_list = list()
+
+            sum_distance = 0
             for e1,row in tsneFrame.iterrows():
                 frame_row_dict = dict()
 
@@ -186,21 +191,31 @@ def analyData(forFrame):
                     e2y = tsneFrame.loc[e2].y
                     # 유클리드 거리 계산
                     distance = math.sqrt((e1x-e2x)**2+(e1y-e2y)**2)
+                    sum_distance += distance
                     frame_row_dict[e2] = distance
                 # end row distance calculation
                 uclid_data_list.append(frame_row_dict)
             uclidFrame = pd.DataFrame(uclid_data_list,index=noun_vocab)
             uclidFrame.to_csv(f'uclid_data/uclidFrame_{label}.csv')
 
+            mean_distance = sum_distance/data_n
 
-            var = uclidFrame.var()
+            v = 0
 
+            for idx,row in uclidFrame.iterrows():
+                for distance in row:
+                    v += (distance - mean_distance)**2
+
+            v = v/data_n
+
+            # var = uclidFrame.var()
+            # print('var','\n',var)
             # 가중치 행렬 구하기 : exp(-(거리 제곱)/(2*분산))
             weight_data_list = list()
             for w in noun_vocab:
                 one_row_dict = dict()
                 #가중치 계산
-                v = var[w]
+                # v = var[w]
                 for wid,dis in uclidFrame[w].items():
                     weight = math.exp(-(dis**2)/(2*v))
                     one_row_dict[wid] = weight
@@ -230,7 +245,7 @@ def analyData(forFrame):
                 one_row_dict = {x:0 for x in noun_vocab}
                 for t in review_token:
                     if t in noun_vocab:
-                        one_row_dict[t] = 1
+                        one_row_dict[t] = one_row_dict[t]+1
                 TDM_data_list.append(one_row_dict)
 
             TdmFrame = pd.DataFrame(TDM_data_list,index = review_tokens_dict.keys()).T
