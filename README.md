@@ -4,7 +4,7 @@
 >![step1](https://user-images.githubusercontent.com/55948026/86918494-c5a2f100-c161-11ea-98f6-c0770968a0c0.PNG)
 >![step2](https://user-images.githubusercontent.com/55948026/86918497-c63b8780-c161-11ea-93f3-73ec853b671a.PNG)
 ## 리뷰 분석 결과
->![plot1](https://user-images.githubusercontent.com/55948026/86923019-70b6a900-c168-11ea-9469-558c99276941.png)
->![plot2](https://user-images.githubusercontent.com/55948026/86923017-70b6a900-c168-11ea-821d-fa157bac04e2.png)
->![plot3](https://user-images.githubusercontent.com/55948026/86923014-6f857c00-c168-11ea-885c-fa4326f58bbf.png)
+>![plot1](https://user-images.githubusercontent.com/55948026/86935934-571d5d80-c178-11ea-9dcb-a880a1aec5f1.png)
+>![plot2](https://user-images.githubusercontent.com/55948026/86935926-5684c700-c178-11ea-9189-3fe862f2dfcc.png)
+>![plot3](https://user-images.githubusercontent.com/55948026/86935935-57b5f400-c178-11ea-8dfb-ef18945cd2da.png)
 
